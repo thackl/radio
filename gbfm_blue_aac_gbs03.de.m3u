@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:-1,GlobalBeats FM - Blue Channel - 48kbps AAC+
+http://gbs03.de:7110/
+#EXTINF:-1,GlobalBeats FM - Blue Channel - 48kbps AAC+ - BACKUP
+http://gbs01.de:7110/
