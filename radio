@@ -1,1 +1,35 @@
-/home/dumps/proggen/workspaces/bash/radio/radio.sh
+#!/bin/bash
+# run/stop internet radios with PLAYER via cli
+
+usage()
+{
+	echo "Usage: 
+radio PATTERN   start one/multiple streams matching PATTERN
+radio ?         list available streams
+radio q         terminate running vlc streams
+	" 2>&1;
+}
+
+PLAYERBIN='vlc';
+PLAYEROPT='--qt-start-minimized --quiet';
+RADIOPATH='/home/dumps/media/radio/';
+
+if [ ! $1 ]; then
+    usage;
+elif [ $1 == '?' ]; then
+        ls -1 "$RADIOPATH";
+elif [ $1 == 'q' ]; then
+        killall "$PLAYERBIN";
+else
+    # get radio
+	RADIOS=$(find $RADIOPATH -type f | grep -i $1);
+	
+	if [ ! $RADIOS ]; then
+	        echo "No radio matching $1 found" 1>&2
+	else
+	        killall vlc 2> /dev/null
+	        cmd_in_bg "$PLAYERBIN" "$PLAYEROPT" "$RADIOS"
+    fi
+fi
+
+

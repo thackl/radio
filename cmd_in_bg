@@ -1,1 +1,14 @@
-/home/dumps/proggen/workspaces/bash/cmd_in_bg/cmd_in_bg.sh
+#!/bin/bash
+# run commend that might open a new window and redirect focus back to terminal
+
+# get a time stamp
+TIME=`date +%s`;
+# create a uniq name for the current terminal
+NAME="cmd_in_bg""$TIME"; echo -en "\033]0;$NAME\a"
+# execute the command+parameter provided
+$@&
+# let it start
+sleep 0.25s
+disown $!;
+# refocus terminal
+wmctrl -a "$NAME"
