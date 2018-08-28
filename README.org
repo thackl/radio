@@ -1,0 +1,8 @@
+Coding in the terminal and want to have one of your favorite radios or playlists
+start playing in the background? Just keep typing:
+
+https://www.radioparadise.com/
+
+#+BEGIN_SRC sh
+radio paradise
+#+END_SRC
