@@ -5,18 +5,23 @@ usage()
 {
 	echo "Usage: 
 radio PATTERN   start one/multiple streams matching PATTERN
-radio ?         list available streams
+radio l         list available streams
 radio q         terminate running vlc streams
 	" 2>&1;
 }
 
+# reliably detect bin
+pushd `dirname $0` > /dev/null
+BIN=`pwd`
+popd > /dev/null
+
 PLAYERBIN='vlc';
 PLAYEROPT='--qt-start-minimized --quiet';
-RADIOPATH='/home/dumps/media/radio/';
+RADIOPATH="$BIN"/radios/;
 
 if [ ! $1 ]; then
     usage;
-elif [ $1 == '?' ]; then
+elif [ $1 == 'l' ]; then
         ls -1 "$RADIOPATH";
 elif [ $1 == 'q' ]; then
         killall "$PLAYERBIN";
@@ -27,8 +32,12 @@ else
 	if [ ! $RADIOS ]; then
 	        echo "No radio matching $1 found" 1>&2
 	else
-	        killall vlc 2> /dev/null
+	    killall vlc 2> /dev/null
+            if hash wmctrl 2>/dev/null; then
 	        cmd_in_bg "$PLAYERBIN" "$PLAYEROPT" "$RADIOS"
+            else
+                $PLAYERBIN $PLAYEROPT "$RADIOS" &
+            fi
     fi
 fi
 
